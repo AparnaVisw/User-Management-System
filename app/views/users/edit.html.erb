@@ -1,0 +1,33 @@
+<br>
+<br>
+<% if @user.nil? == false %>
+<h1>Edit user details</h1>
+<%= form_for @user , :as => :user, :url => users_update_path(@user), :method => :PUT do |f| %>
+  <%= f.label :first_name %>:<br>
+  <%= f.text_field :first_name %><br>
+
+  <%= f.label :last_name %>:<br>
+  <%= f.text_field :last_name %><br>
+
+  <%= f.label :age %>:<br>
+  <%= f.number_field :age %><br>
+
+  <%= f.label :biography %>:<br>
+  <%= f.text_field :biography %><br>
+
+  <%= f.label :email %>:<br>
+  <%= f.text_field :email %><br>
+
+  <%= f.submit %>
+<% end %>
+<%else%>
+<h3> Such a user record does not exist. Please click on a specific user </p>
+<%end%>
+<footer class= "footer">
+<% if user_signed_in? %>
+  Logged in as <strong><%= current_user.email %></strong>.
+  <%= link_to "Logout", destroy_user_session_path, method: :delete, :class => 'navbar-link'  %>
+<% end %>
+<br>
+</footer>
+
