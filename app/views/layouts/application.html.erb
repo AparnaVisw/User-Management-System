@@ -10,8 +10,18 @@
 
   <body>
   <%= render 'layouts/header' %>
+  <div class="jumbotron">
   <div class="container">
+  <% if user_signed_in? %>
+  <!-- <img src="http://placekitten.com/g/1500/300"/> -->
+  <%end %>
     <%= yield %>
   </div>
+  </div>
   </body>
+  <% if user_signed_in? %>
+  <%= render 'layouts/footer' %>
+  <% else %>
+  <h5> Copyright reserved </h5>
+  <%end%>
 </html>

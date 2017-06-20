@@ -1,19 +1,16 @@
 
 <br>
 <br>
-<% if @user.nil? == false %>
-<h1>User details</h1>
-  <h3>Displaying <%=@user.first_name%>'s details </h3>
-
+<h3>User details</h3>
 <table id="albums" cellspacing="0">
   <thead>
     <tr>
-      <th>        FIRSTNAME        </th>
-      <th>        LASTNAME      </th>
-      <th>        EMAIL        </th>
-      <th>        BIOGRAPHY       </th>
-      <th>        AGE     </th>
-      <th colspan="25"></th>
+      <th>FIRSTNAME</th>
+      <th>LASTNAME</th>
+      <th>EMAIL</th>
+      <th>BIOGRAPHY</th>
+      <th>AGE</th>
+      <th colspan="20"></th>
     </tr>
   </thead>
   <tr>
@@ -24,16 +21,10 @@
     <td> <%= @user.age %> </td>
   </tr>
 </table>
-<footer class= "footer">
-Logged in as <strong><%= current_user.email %></strong>
- <%= link_to '  Edit  ', users_edit_path(id: @user.id) %>
-<%= link_to 'Delete     ', users_delete_path(id: @user.id),  method: :delete, data: { confirm: 'Are you sure?' } %>
-<%= link_to "Logout", destroy_user_session_path, method: :delete, :class => 'navbar-link'  %>
-</footer>
-<%else%>
-<h3> Such a user record does not exist. Please click on a specific user </p>
-<footer class= "footer">
-Logged in as <strong><%= current_user.email %></strong>
-<%= link_to "Logout", destroy_user_session_path, method: :delete, :class => 'navbar-link'  %>
-</footer>
-<%end%>
+<% if can? :edit, User %>
+ <%= link_to '  Edit  ', users_edit_path(id: @user.id) , class: "small button"%>
+ <% end %>
+ <% if can? :delete, User %>
+<%= link_to 'Delete     ', users_delete_path(id: @user.id),  method: :delete, data: { confirm: 'Are you sure?' }, class: "small button" %> <% end %>
+<%= link_to 'HOME', root_path,  method: :get, class: "small button" %>
+

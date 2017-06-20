@@ -1,7 +1,13 @@
 class UsersController < ApplicationController
+before_filter :authenticate_user!
+load_and_authorize_resource
 
   def index
-    @users = User.all
+    if current_user.role ==  "Admin"
+      @users = User.all
+    else
+      @user = User.find(current_user.id)
+   end
     redirect_to new_user_registration_path if current_user.nil?
     respond_to do |format|
       format.html
@@ -9,11 +15,7 @@ class UsersController < ApplicationController
   end
 
    def show
-    if (User.all.pluck(:id).include?params[:id].to_i) == false
-      flash[:notice] = "You cannot perform such an action"
-    else
      @user = User.find(params[:id])
-   end
      respond_to do |format|
         format.html
      end
@@ -25,6 +27,7 @@ class UsersController < ApplicationController
 
    def create
     @user = User.new(user_params)
+    @user.role = 'Non-admin'
 
    if @user.save
       redirect_to :action => 'index'
@@ -38,11 +41,7 @@ class UsersController < ApplicationController
    end
 
    def edit
-    if (User.all.pluck(:id).include?params[:id].to_i) == false
-      flash[:notice] = "You cannot perform such an action"
-    else
     @user = User.find(params[:id])
-    end
     respond_to do |format|
       format.html
     end

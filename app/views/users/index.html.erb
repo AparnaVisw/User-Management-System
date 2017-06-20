@@ -1,37 +1,44 @@
-<br>
-<br>
-<h1>                                   All registered users               </h1>
 
 <table id="albums" cellspacing="0">
   <thead>
     <tr>
       <th>        NAME        </th>
       <th>        EMAIL       </th>
+      <% if current_user.role == "Admin" %>
       <th>        EDIT        </th>
       <th>        SHOW        </th>
       <th>        DESTROY     </th>
+      <% end %>
       <th colspan="15"></th>
     </tr>
   </thead>
-
+<% if current_user.role == "Admin" %>
 <% @users.each do |user| %>
   <tr>
     <td><%= user.first_name %></td>
     <td><%= user.email %></td>
-    <td><%= link_to 'Edit', users_edit_path(id: user.id) %></td>
-    <td><%= link_to 'Show', users_show_path(id: user.id) %></td>
-    <td><%= link_to 'Destroy', users_delete_path(id: user.id),  method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    <% if can? :edit, user %>
+    <td><%= link_to 'Edit', users_edit_path(id: user.id), class: "small button"%></td><% end %>
+    <% if can? :show, user %>
+    <td><%= link_to 'Show', users_show_path(id: user.id), class: "small button"%></td><% end %>
+    <% if can? :delete, user %>
+    <td><%= link_to 'Destroy', users_delete_path(id: user.id),  method: :delete, data: { confirm: 'Are you sure?' } , class: "small button"%></td>
+    <% end %>
   </tr>
 <% end %>
+<% else %>
+<tr>
+    <td><%= @user.first_name %></td>
+    <td><%= @user.email %></td>
+    <% if can? :edit, User %>
+    <td><%= link_to 'Edit', users_edit_path(id: @user.id), class: "small button" %></td><% end %>
+    <% if can? :show, User %>
+    <td><%= link_to 'Show', users_show_path(id: @user.id), class: "small button" %></td><% end %>
+    <% if can? :delete, User %>
+    <td><%= link_to 'Destroy', users_delete_path(id: @user.id),  method: :delete, data: { confirm: 'Are you sure?' } , class: "small button"%></td> <% end %>
+  </tr>
+<%end %>
 </table>
 
-<br>
+<%#= link_to 'Change password', edit_user_registration_path,  class: "small button" %>
 
-<footer class= "footer">
-<% if user_signed_in? %>
-  Logged in as <strong><%= current_user.email %></strong>.
-<% end %>
-<%= link_to 'Edit profile', edit_user_registration_path, :class => 'navbar-link' %>
-<%= link_to "Logout", destroy_user_session_path, method: :delete, :class => 'navbar-link'  %>
-<br>
-</footer>

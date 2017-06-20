@@ -5,3 +5,7 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+if User.find_by(:role => 'Admin').nil?
+  User.create([{email:"admin_user@usermanagementsystem.com",password: "topsecret",first_name:"admin",last_name:"ums", biography: "i serve as admin at the ums", age:20, role: "Admin"}])
+end
